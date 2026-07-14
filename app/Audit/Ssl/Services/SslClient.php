@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Http;
 
 class SslClient
 {
-    private string $apiKey = 'at_2qpm3coqMFBD0WJWR84cEXbASLa0y';
+    private string $apiKey = 'dsk_5105114246b2160057ff962212fe989537f1bb1fd75d3c437143908621547e59';
 
     /**
      * @throws RequestException
@@ -18,9 +18,9 @@ class SslClient
     {
         $response = Http::timeout(120)
             ->retry(3, 500)
-            ->get('https://ssl-certificates.whoisxmlapi.com/api/v1?', [
-                'apiKey' => $this->apiKey,
-                'domainName' => $url,
+            ->withHeader('x-api-key', $this->apiKey)
+            ->get('https://domscan.net/v1/ssl/audit?', [
+                'domain' => parse_url($url, PHP_URL_HOST),
             ]);
         $response->throw();
 

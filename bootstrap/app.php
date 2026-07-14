@@ -6,6 +6,7 @@ use Illuminate\Foundation\Application;
 use Illuminate\Foundation\Configuration\Exceptions;
 use Illuminate\Foundation\Configuration\Middleware;
 use Illuminate\Http\Middleware\AddLinkHeadersForPreloadedAssets;
+use Illuminate\Http\Request;
 
 return Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
@@ -23,15 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
-        // ВАЖНО: Перехватываем ВСЕ ошибки на Vercel и выводим их чистым текстом
-        $exceptions->renderable(function (Throwable $e) {
-            if (env('LOG_CHANNEL') === 'stderr' || true) {
-                header('Content-Type: text/plain', true, 500);
-                echo "ACTUAL UNDERLYING ERROR:\n";
-                echo $e->getMessage()."\n\n";
-                echo 'File: '.$e->getFile().' on line '.$e->getLine()."\n\n";
-                echo "Trace:\n".$e->getTraceAsString();
-                exit(1);
-            }
-        });
+        $exceptions->shouldRenderJsonWhen(
+            fn (Request $request) => $request->is('api/*'),
+        );
     })->create();

@@ -16,8 +16,8 @@ class CertificatesItemResult
     {
         $dto = new self;
         $dto->number = $serialNumber;
-        $dto->validFrom = CarbonImmutable::parse($certificate['validFrom']);
-        $dto->validTo = CarbonImmutable::parse($certificate['validTo']);
+        $dto->validFrom = CarbonImmutable::parse($certificate['valid_from']);
+        $dto->validTo = CarbonImmutable::parse($certificate['valid_until']);
 
         return $dto;
     }

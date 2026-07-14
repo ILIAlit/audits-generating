@@ -17,12 +17,10 @@ class SslParser
 
     public function parseCertificates($responseData): array
     {
-        $certificates = $responseData['certificates'];
+        $certificate = $responseData['certificate'];
         $certificateResults = [];
-        foreach ($certificates as $certificate) {
-            $serialNumber = $certificate['serialNumber'];
-            $certificateResults[] = CertificatesItemResult::fromArray($serialNumber, $certificate);
-        }
+        $serialNumber = $certificate['serial_number'];
+        $certificateResults[] = CertificatesItemResult::fromArray($serialNumber, $certificate);
 
         return $certificateResults;
     }
