@@ -24,6 +24,8 @@ class AuditManager
     {
         $this->checkers[] = $checker;
 
+        $a = 'test';
+
         return $this;
     }
 
